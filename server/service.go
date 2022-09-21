@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"main/rpc"
+	"strconv"
 )
 
 type Server struct {
@@ -14,6 +15,7 @@ type Server struct {
 func (s Server) Hello(ctx context.Context, request *rpc.HelloRequest) (*rpc.HelloResponse, error) {
 	resp := rpc.HelloResponse{
 		Hello: "客户端已成功调用服务端的函数！",
+		Port: strconv.Itoa(Port),
 	}
 	return &resp, nil
 }
