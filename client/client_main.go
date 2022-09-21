@@ -5,6 +5,7 @@ import (
 	"fmt"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.etcd.io/etcd/client/v3/naming/resolver"
+	"golanglearning/new_project/ServiceDiscoveryByETCD/client/api"
 	"golanglearning/new_project/ServiceDiscoveryByETCD/client/rpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/balancer/roundrobin"
@@ -23,6 +24,7 @@ func main() {
 
 	etcdClient, err := clientv3.NewFromURL(etcdURL)
 	if err != nil {
+		fmt.Println(api.EtcdError)
 		panic(err)
 	}
 	etcdResolver, err := resolver.NewBuilder(etcdClient)
@@ -34,6 +36,7 @@ func main() {
 	)
 	if err != nil {
 		fmt.Printf("err: %v", err)
+		fmt.Println(api.EtcdError)
 	}
 
 	// 主要调用server端的Hello方法
@@ -41,6 +44,7 @@ func main() {
 	for {
 		helloRespone, err := ServerClient.Hello(context.Background(), &rpc.HelloRequest{})
 		if err != nil {
+			fmt.Println(api.RPCResponseError)
 			fmt.Printf("err: %v", err)
 			return
 		}
