@@ -8,15 +8,16 @@ import (
 	"log"
 )
 
-const etcdUrl = "http://localhost:2379"
-const serviceName = "example/server"
-const ttl = 10
 
+
+// etcd客户端
 var etcdClient *clientv3.Client
 
+// EtcdRegister 注册实例
 func EtcdRegister(addr string) error {
 
 	log.Printf("etcdRegister %s\b", addr)
+	// etcd客户端
 	etcdClient, err := clientv3.NewFromURL(etcdUrl)
 	if err != nil {
 		return err
@@ -29,22 +30,24 @@ func EtcdRegister(addr string) error {
 
 	ctx := context.Background()
 
+	// 需要为实例续期
 	lease, _ := etcdClient.Grant(ctx, ttl)
-
+	// 加入
 	err = em.AddEndpoint(ctx, fmt.Sprintf("%s/%s", serviceName, addr), endpoints.Endpoint{Addr: addr}, clientv3.WithLease(lease.ID))
 	if err != nil {
 		return err
 	}
+	// 需要发送消息，定时续期，查看健康状态
 	alive, err := etcdClient.KeepAlive(context.TODO(), lease.ID)
 	if err != nil {
 		return err
 	}
 
-
+	// 启一个goroutine查看健康状态。
 	go func() {
 		for {
 			<-alive
-			fmt.Println("etcd server keep alive")
+			fmt.Println("etcd server keep alive，健康状态检查。")
 		}
 	}()
 
@@ -54,7 +57,7 @@ func EtcdRegister(addr string) error {
 
 }
 
-
+// EtcdUnRegister 解绑实例
 func EtcdUnRegister(addr string) error {
 
 	log.Printf("etcdUnRegister %s\b", addr)
@@ -64,6 +67,7 @@ func EtcdUnRegister(addr string) error {
 			return err
 		}
 		ctx := context.Background()
+		// 移除节点
 		err = em.DeleteEndpoint(ctx, fmt.Sprintf("%s/%s", serviceName, addr))
 		if err != nil {
 			return err

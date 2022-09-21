@@ -8,6 +8,7 @@ message HelloRequest {
 
 message HelloResponse {
   string hello = 1;
+  string port = 2;
 }
 
 message RegisterRequest {

@@ -16,12 +16,15 @@ import (
 
 )
 
+var Port int
+
 func main() {
+	// 端口
 	var port int
 	flag.IntVar(&port, "port", 8080, "port")
 	flag.Parse()
 	addr := fmt.Sprintf("localhost:%d", port)
-
+	Port = port
 
 	stopC := make(chan os.Signal, 1)
 	signal.Notify(stopC, syscall.SIGTERM, syscall.SIGINT, syscall.SIGKILL, syscall.SIGHUP, syscall.SIGQUIT)
@@ -35,7 +38,7 @@ func main() {
 		}
 
 	}()
-
+	// 注册地址
 	err := EtcdRegister(addr)
 
 	if err != nil {

@@ -36,6 +36,7 @@ func main() {
 		fmt.Printf("err: %v", err)
 	}
 
+	// 主要调用server端的Hello方法
 	ServerClient := rpc.NewServerClient(connection)
 	for {
 		helloRespone, err := ServerClient.Hello(context.Background(), &rpc.HelloRequest{})
