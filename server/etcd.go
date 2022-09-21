@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"context"
@@ -17,7 +17,7 @@ var etcdClient *clientv3.Client
 func EtcdRegister(addr string) error {
 
 	log.Printf("etcdRegister %s\b", addr)
-	etcdClient, err := clientv3.NewFromURL(addr)
+	etcdClient, err := clientv3.NewFromURL(etcdUrl)
 	if err != nil {
 		return err
 	}
@@ -49,6 +49,7 @@ func EtcdRegister(addr string) error {
 	}()
 
 	return nil
+
 
 
 }
