@@ -32,4 +32,4 @@ EtcdUnRegister方法：从etcd中解绑实例。
 
 `go run . client_main.go`
 ## 流程图
-![项目架构](https://github.com/googs1025/Simple-work-pool-framework/blob/main/image/%E6%9E%B6%E6%9E%84.jpg](https://github.com/googs1025/Service-Discovery-from-etcd/blob/main/image/%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg?raw=true)
+![项目架构](https://raw.githubusercontent.com/googs1025/Service-Discovery-from-etcd/main/image/%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg?raw=true)
